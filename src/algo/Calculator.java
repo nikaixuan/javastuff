@@ -21,7 +21,7 @@ public class Calculator {
         while (i < s.length()) {
             char c = s.charAt(i);
             // get number
-            if (isDigit(c)) {
+            if (c>='0'&&c<='9') {
                 n = n * 10 + (c - '0');
             }
             // if having a bracket, take the equation inside it as a new sting and calculate
@@ -40,8 +40,7 @@ public class Calculator {
                 // move the pointer to the end bracket
                 i=j-1;
             }
-            if ((!isDigit(c) && c!=' ') || i == s.length()-1) {
-                int pre;
+            if ((!(c>='0'&&c<='9') && c!=' ') || i == s.length()-1) {
                 switch (sign) {
                     case '+':
                         stack.push(n);
@@ -50,12 +49,10 @@ public class Calculator {
                         stack.push(-n);
                         break;
                     case '*':
-                        pre = stack.pop();
-                        stack.push(pre*n);
+                        stack.push(stack.pop()*n);
                         break;
                     case '/':
-                        pre = stack.pop();
-                        stack.push(pre/n);
+                        stack.push(stack.pop()/n);
                         break;
                 }
                 sign = c;
@@ -68,9 +65,5 @@ public class Calculator {
             sum+=stack.pop();
         }
         return sum;
-    }
-
-    public boolean isDigit(char c) {
-        return c>='0'&&c<='9';
     }
 }

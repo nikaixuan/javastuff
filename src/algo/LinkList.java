@@ -118,6 +118,48 @@ public class LinkList {
 
     }
 
+    // 143
+    public void reorderList(ListNode head) {
+        if (head.next==null) return;
+        ListNode fast = head;
+        ListNode slow = head;
+        while (fast.next!=null&&fast.next.next!=null) {
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        ListNode rev = reverseLink(slow.next);
+        slow.next = null;
+        ListNode curr = head;
+        while (curr!=null&&rev!=null) {
+            ListNode temp1 = curr.next;
+            ListNode temp2 = rev.next;
+            curr.next = rev;
+            rev.next = temp1;
+            curr = temp1;
+            rev = temp2;
+        }
+    }
+
+    public ListNode reverseLink(ListNode head) {
+        if (head.next==null) return head;
+        ListNode last = reverseLink(head.next);
+        head.next.next = head;
+        head.next = null;
+        return last;
+    }
+
+    public ListNode reverseLink2(ListNode head) {
+        ListNode pre = new ListNode();
+        ListNode curr = head;
+        while (curr!=null) {
+            ListNode temp = curr.next;
+            curr.next = pre;
+            pre = curr;
+            curr = temp;
+        }
+        return pre;
+    }
+
     public static void main(String[] args) {
         LinkList ln = new LinkList();
         ln.rotateRight(new ListNode(1, new ListNode(2)), 2);

@@ -66,4 +66,52 @@ public class ArrayProblems {
         }
         return true;
     }
+
+    // 11
+    public int maxArea(int[] height) {
+        int i=0, j= height.length-1;
+        int max = 0;
+        while (i<j) {
+            int h;
+            if (height[i]> height[j]) {
+                h = height[j];
+            } else {
+                h = height[i];
+            }
+            max = Math.max(max, h*(j-i));
+            if (height[i]> height[j]) {
+                j--;
+            } else {
+                i++;
+            }
+        }
+        return max;
+    }
+
+    // 33
+    public int search(int[] nums, int target) {
+        int high = nums.length-1;
+        int low = 0;
+        while (low<=high) {
+            int mid = low+(high-low)/2;
+            int num = 0;
+            if ((nums[0]>nums[mid])==(nums[0]>target)) {
+                num = nums[mid];
+            } else {
+                if (target<nums[0]) {
+                    num = Integer.MIN_VALUE;
+                } else {
+                    num = Integer.MAX_VALUE;
+                }
+            }
+            if (num>target) {
+                high = mid-1;
+            } else if (num<target) {
+                low = mid+1;
+            } else {
+                return mid;
+            }
+        }
+        return -1;
+    }
 }
