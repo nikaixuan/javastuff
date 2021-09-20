@@ -1,4 +1,4 @@
-package leetcode;
+package algo;
 
 import javafx.util.Pair;
 
@@ -161,5 +161,83 @@ public class BinaryTree {
             res.add(subRes);
         }
         return res;
+    }
+
+    // 1161
+    public int maxLevelSum(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<>();
+        int max = Integer.MIN_VALUE;
+        int res=0, level = 0;
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            int l = queue.size();
+            int sum = 0;
+            level++;
+            for (int i=0;i<l;i++) {
+                TreeNode curr = queue.poll();
+                sum += curr.val;
+                if (curr.left!=null) {
+                    queue.offer(curr.left);
+                }
+                if (curr.right!=null) {
+                    queue.offer(curr.right);
+                }
+            }
+            if (max<sum) {
+                max = sum;
+                res = level;
+            }
+        }
+        return res;
+    }
+
+    // 1302
+    // bfs
+    public int deepestLeavesSum(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<>();
+
+        queue.offer(root);
+        int res = 0;
+        while (!queue.isEmpty()) {
+            int l = queue.size();
+            int sum = 0;
+            for (int i=0;i<l;i++) {
+                TreeNode curr = queue.poll();
+                sum += curr.val;
+                if (curr.left != null) {
+                    queue.offer(curr.left);
+                }
+                if (curr.right != null) {
+                    queue.offer(curr.right);
+                }
+            }
+            if (queue.isEmpty()) {
+                res = sum;
+            }
+        }
+        return res;
+    }
+
+    // dfs
+    public int deepestLeavesSum2(TreeNode root) {
+        return leaveSumDfs(root).getValue();
+    }
+
+    public Pair<Integer, Integer> leaveSumDfs(TreeNode root) {
+        if (root==null) {
+            return new Pair<>(0, 0);
+        }
+        if (root.right==null && root.left==null) {
+            return new Pair<>(1, root.val);
+        }
+        Pair<Integer, Integer> left = leaveSumDfs(root.left);
+        Pair<Integer, Integer> right = leaveSumDfs(root.right);
+
+        if (left.getKey().equals(right.getKey())) return new Pair<>(left.getKey()+1, left.getValue()+right.getValue());
+        if (left.getKey()>right.getKey()) {
+            return new Pair<>(left.getKey()+1, left.getValue());
+        } else {
+            return new Pair<>(right.getKey()+1, right.getValue());
+        }
     }
 }
